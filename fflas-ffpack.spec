@@ -34,21 +34,13 @@ over word size prime finite fields.
 
 %package devel
 Summary:        Header files for developing with fflas-ffpack
-Group:          Development/Libraries
+Group:          Development/C++
 Requires:       libatlas-devel, givaro-devel, gmp-devel
 
 %description devel
 The FFLAS-FFPACK library provides functionality for dense linear algebra
 over word size prime finite fields.  This package provides the header
 files for developing applications that use FFLAS-FFPACK.
-
-%package doc
-Summary:        API documentation for fflas-ffpack
-Group:          Documentation
-Requires:       %{name}-devel = %{version}-%{release}
-
-%description doc
-API documentation for fflas-ffpack.
 
 %prep
 %setup -q
@@ -97,6 +89,4 @@ make check
 %doc AUTHORS ChangeLog COPYING README TODO
 %{_bindir}/fflas-ffpack-config
 %{_includedir}/fflas-ffpack
-
-%files doc
 %doc doc/fflas-ffpack.html doc/fflas-ffpack-html doc/fflas-ffpack-dev-html
