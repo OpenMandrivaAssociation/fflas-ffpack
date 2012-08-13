@@ -22,6 +22,7 @@ BuildRequires:  libatlas-devel
 BuildRequires:  doxygen
 BuildRequires:  givaro-devel
 BuildRequires:  gmp-devel
+BuildRequires:  gomp-devel
 BuildRequires:  texlive
 
 # Although there are references to linbox-devel files in this package,
