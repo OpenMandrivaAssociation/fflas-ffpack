@@ -6,7 +6,7 @@
 
 Name:           fflas-ffpack
 Version:        1.6.0
-Release:        1
+Release:        2
 Summary:        Finite field linear algebra subroutines
 
 Group:          Sciences/Mathematics
@@ -81,6 +81,9 @@ rm -fr $RPM_BUILD_ROOT%{_prefix}/docs
 
 # Don't want these files in with the HTML files
 rm -f doc/fflas-ffpack-html/{AUTHORS,COPYING,INSTALL}
+
+# Force linking to atlas lapack
+sed -i 's|-llapack|-lclapack|g' $RPM_BUILD_ROOT%{_bindir}/fflas-ffpack-config
 
 %check
 make check
