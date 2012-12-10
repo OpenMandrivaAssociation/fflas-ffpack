@@ -93,3 +93,15 @@ make check
 %{_bindir}/fflas-ffpack-config
 %{_includedir}/fflas-ffpack
 %doc doc/fflas-ffpack.html doc/fflas-ffpack-html doc/fflas-ffpack-dev-html
+
+
+%changelog
+* Tue Aug 14 2012 Paulo Andrade <pcpa@mandriva.com.br> 1.6.0-2
++ Revision: 814798
+- Force linking to atlas lapack.
+
+* Mon Aug 13 2012 Paulo Andrade <pcpa@mandriva.com.br> 1.6.0-1
++ Revision: 814619
+- Import fflas-ffpack (http://pkgs.fedoraproject.org/cgit/fflas-ffpack.git/)
+- Import fflas-ffpack matching fedora package
+
