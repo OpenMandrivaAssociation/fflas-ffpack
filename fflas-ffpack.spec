@@ -6,10 +6,8 @@
 
 Name:           fflas-ffpack
 Version:        1.6.0
-Release:        2
+Release:        3
 Summary:        Finite field linear algebra subroutines
-
-Group:          Sciences/Mathematics
 # %%{_bindir}/fflasffpack-config is CeCILL-B; other files are LGPLv2+
 License:        LGPLv2+ and CeCILL-B
 URL:            http://linalg.org/projects/fflas-ffpack
@@ -34,13 +32,19 @@ over word size prime finite fields.
 
 %package devel
 Summary:        Header files for developing with fflas-ffpack
-Group:          Development/C++
 Requires:       libatlas-devel, givaro-devel, gmp-devel
 
 %description devel
 The FFLAS-FFPACK library provides functionality for dense linear algebra
 over word size prime finite fields.  This package provides the header
 files for developing applications that use FFLAS-FFPACK.
+
+%package doc
+Summary:        API documentation for fflas-ffpack
+Requires:       %{name}-devel%{?_isa} = %{version}-%{release}
+
+%description doc
+API documentation for fflas-ffpack.
 
 %prep
 %setup -q
@@ -65,7 +69,7 @@ done
 %build
 %configure --docdir=%{_docdir}/fflas-ffpack-%{version} --disable-static \
   --enable-optimization --enable-doc --with-cblas=%{_libdir}/atlas \
-  --with-lapack=%{_libdir}/atlas
+  --with-lapack=%{_libdir}/atlas CPPFLAGS="-D__int64=__int64_t"
 make %{?_smp_mflags}
 
 # Build the developer documentation, too
@@ -92,16 +96,6 @@ make check
 %doc AUTHORS ChangeLog COPYING README TODO
 %{_bindir}/fflas-ffpack-config
 %{_includedir}/fflas-ffpack
+
+%files doc
 %doc doc/fflas-ffpack.html doc/fflas-ffpack-html doc/fflas-ffpack-dev-html
-
-
-%changelog
-* Tue Aug 14 2012 Paulo Andrade <pcpa@mandriva.com.br> 1.6.0-2
-+ Revision: 814798
-- Force linking to atlas lapack.
-
-* Mon Aug 13 2012 Paulo Andrade <pcpa@mandriva.com.br> 1.6.0-1
-+ Revision: 814619
-- Import fflas-ffpack (http://pkgs.fedoraproject.org/cgit/fflas-ffpack.git/)
-- Import fflas-ffpack matching fedora package
-
