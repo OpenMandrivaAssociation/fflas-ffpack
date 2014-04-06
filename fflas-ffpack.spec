@@ -6,7 +6,7 @@
 
 Name:           fflas-ffpack
 Version:        1.6.0
-Release:        3
+Release:        4
 Summary:        Finite field linear algebra subroutines
 # %%{_bindir}/fflasffpack-config is CeCILL-B; other files are LGPLv2+
 License:        LGPLv2+ and CeCILL-B
@@ -14,7 +14,9 @@ URL:            http://linalg.org/projects/fflas-ffpack
 Source0:        http://linalg.org/%{name}-%{version}.tar.gz
 
 # Patch from upstream discussion list.  Fixes building with debug.
-Patch1:         %{name}-debug.patch
+Patch0:         %{name}-debug.patch
+# Enable building on aarch64.
+Patch1:         %{name}-aarch64.patch
 
 BuildRequires:  libatlas-devel
 BuildRequires:  doxygen
@@ -48,6 +50,7 @@ API documentation for fflas-ffpack.
 
 %prep
 %setup -q
+%patch0 -p1
 %patch1 -p1
 
 # Fix character encodings
@@ -66,11 +69,24 @@ for f in `grep -FRl 'Temple Place' .`; do
   rm -f $f.orig
 done
 
+# Adapt to monolithic ATLAS libraries in version 3.10 and later
+sed -e 's,-lcblas,-lsatlas,' \
+    -e 's,-latlas,-lsatlas,' \
+    -e 's,$BLAS_HOME/lib/libcblas\.so,$BLAS_HOME/libsatlas.so,' \
+    -e 's,-L${BLAS_HOME}/lib,-L${BLAS_HOME},' \
+    -e 's,\(ATLAS_NEEDED2=\).*,\1"ATL",' \
+    -i configure
+
 %build
 %configure --docdir=%{_docdir}/fflas-ffpack-%{version} --disable-static \
   --enable-optimization --enable-doc --with-cblas=%{_libdir}/atlas \
   --with-lapack=%{_libdir}/atlas CPPFLAGS="-D__int64=__int64_t"
 make %{?_smp_mflags}
+
+# Fix the config file for the monolithic ATLAS libraries
+sed -e 's, -lsatlas -lsatlas,-lsatlas,' \
+    -e 's,%{_libdir}/atlas/lib,%{_libdir}/atlas,' \
+    -i fflas-ffpack-config
 
 # Build the developer documentation, too
 cd doc
@@ -85,9 +101,6 @@ rm -fr $RPM_BUILD_ROOT%{_prefix}/docs
 
 # Don't want these files in with the HTML files
 rm -f doc/fflas-ffpack-html/{AUTHORS,COPYING,INSTALL}
-
-# Force linking to atlas lapack
-sed -i 's|-llapack|-lclapack|g' $RPM_BUILD_ROOT%{_bindir}/fflas-ffpack-config
 
 %check
 make check

@@ -1,6 +1,6 @@
---- ./utils/debug.h.orig	2011-10-09 11:58:19.000000000 -0600
+--- ./utils/debug.h.orig	2012-03-26 07:24:57.000000000 -0600
 +++ ./utils/debug.h	2012-05-03 13:48:30.764978078 -0600
-@@ -107,7 +107,7 @@ throw FFPACK::Failure (__func__, __FILE_
+@@ -108,7 +108,7 @@ throw FFPACK::Failure (__func__, __FILE_
  
  
  namespace FFPACK {
@@ -9,7 +9,7 @@
  
  	/*!  A precondtion failed.
  	 * @ingroup util
-@@ -214,6 +214,7 @@ namespace FFPACK {
+@@ -215,6 +215,7 @@ namespace FFPACK {
  #endif
  
  	std::ostream *Failure::_errorStream;
