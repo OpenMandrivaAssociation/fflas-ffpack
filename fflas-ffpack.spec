@@ -6,7 +6,7 @@
 
 Name:           fflas-ffpack
 Version:        1.6.0
-Release:        4
+Release:        5
 Summary:        Finite field linear algebra subroutines
 # %%{_bindir}/fflasffpack-config is CeCILL-B; other files are LGPLv2+
 License:        LGPLv2+ and CeCILL-B
