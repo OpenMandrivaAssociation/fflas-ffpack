@@ -5,18 +5,15 @@
 %global debug_package %{nil}
 
 Name:           fflas-ffpack
-Version:        1.6.0
-Release:        5
+Version:        2.2.2
+Release:        1
 Summary:        Finite field linear algebra subroutines
 # %%{_bindir}/fflasffpack-config is CeCILL-B; other files are LGPLv2+
 License:        LGPLv2+ and CeCILL-B
 URL:            http://linalg.org/projects/fflas-ffpack
-Source0:        http://linalg.org/%{name}-%{version}.tar.gz
+Source0:	https://github.com/linbox-team/fflas-ffpack/releases/download/v%{version}/fflas-ffpack-%{version}.tar.gz
 
-# Patch from upstream discussion list.  Fixes building with debug.
-Patch0:         %{name}-debug.patch
-# Enable building on aarch64.
-Patch1:         %{name}-aarch64.patch
+Patch1:		fflas-ffpack-x86.patch
 
 BuildRequires:  libatlas-devel
 BuildRequires:  doxygen
@@ -50,7 +47,6 @@ API documentation for fflas-ffpack.
 
 %prep
 %setup -q
-%patch0 -p1
 %patch1 -p1
 
 # Fix character encodings
@@ -78,10 +74,11 @@ sed -e 's,-lcblas,-lsatlas,' \
     -i configure
 
 %build
-%configure --docdir=%{_docdir}/fflas-ffpack-%{version} --disable-static \
-  --enable-optimization --enable-doc --with-cblas=%{_libdir}/atlas \
-  --with-lapack=%{_libdir}/atlas CPPFLAGS="-D__int64=__int64_t"
-make %{?_smp_mflags}
+%configure --docdir=%{_docdir}/fflas-ffpack --disable-static --enable-openmp \
+  --disable-simd --enable-doc \
+  --with-blas-cflags="-I%{_includedir}/atlas" \
+  --with-blas-libs="-L%{_libdir}/atlas -lsatlas"
+%make
 
 # Fix the config file for the monolithic ATLAS libraries
 sed -e 's, -lsatlas -lsatlas,-lsatlas,' \
@@ -103,12 +100,23 @@ rm -fr $RPM_BUILD_ROOT%{_prefix}/docs
 rm -f doc/fflas-ffpack-html/{AUTHORS,COPYING,INSTALL}
 
 %check
+# The Givaro::Integer-related FTRSM tests are broken in 2.2.2.  Disable them
+# for now.  Remove this for the next release, since a fix has already been
+# checked into git.  (The fix touches too much to backport easily.)
+sed -i '/run_with_field</d' tests/test-ftrsm.C
+
+if [ %{__isa_bits} = "32" ]; then
+  # On 32-bit architectures, the LU tests are broken for a similar reason.
+  # Also reenable these tests on the next release after 2.2.2.
+  sed -i '/run_with_field</d' tests/test-lu.C
+fi
 make check
 
 %files devel
-%doc AUTHORS ChangeLog COPYING README TODO
+%doc AUTHORS ChangeLog COPYING NEWS TODO
 %{_bindir}/fflas-ffpack-config
 %{_includedir}/fflas-ffpack
+%{_libdir}/pkgconfig/fflas-ffpack.pc
 
 %files doc
 %doc doc/fflas-ffpack.html doc/fflas-ffpack-html doc/fflas-ffpack-dev-html

@@ -1,2 +1,4 @@
+removed_sources:
+  fflas-ffpack-1.6.0.tar.gz: a747676d3d0720162cfc0517436d624758359711
 sources:
-  "fflas-ffpack-1.6.0.tar.gz": a747676d3d0720162cfc0517436d624758359711
+  fflas-ffpack-2.2.2.tar.gz: 0d1ecc593482889e76da3f44a48b17d5b15d76f1
