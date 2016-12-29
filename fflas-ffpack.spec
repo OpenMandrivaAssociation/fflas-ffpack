@@ -74,6 +74,8 @@ sed -e 's,-lcblas,-lsatlas,' \
     -i configure
 
 %build
+export CC=gcc
+export CXX=g++
 %configure --docdir=%{_docdir}/fflas-ffpack --disable-static --enable-openmp \
   --disable-simd --enable-doc \
   --with-blas-cflags="-I%{_includedir}/atlas" \
