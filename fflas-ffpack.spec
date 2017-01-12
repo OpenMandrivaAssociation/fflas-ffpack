@@ -3,6 +3,7 @@
 # files DO vary by platform.  However, there is no actual compiled code, so
 # turn off debuginfo generation.
 %global debug_package %{nil}
+%define _disable_lto 1
 
 Name:           fflas-ffpack
 Version:        2.2.2
