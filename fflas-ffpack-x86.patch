@@ -1,0 +1,41 @@
+--- a/fflas-ffpack/utils/bit_manipulation.h.orig	2016-07-30 12:27:29.000000000 -0600
++++ b/fflas-ffpack/utils/bit_manipulation.h	2016-10-20 15:23:02.851714234 -0600
+@@ -98,7 +98,7 @@ inline int32_t ctz(uint64_t val) {
+ 
+ 
+ 
+-#ifdef __FFLASFFPACK_HAVE_INT128
++#if defined(__FFLASFFPACK_HAVE_INT128) && defined(__x86_64__)
+ // division 128bits by 64 bits
+ // int128_t(u1,u0) = u1*2^64+u0, div v, rem r
+ // return quo
+@@ -117,7 +117,7 @@ static uint64_t divide_128(uint64_t u1,
+ #endif
+ 
+ static uint64_t getpoweroftwoden_128(uint32_t d, uint64_t q, uint64_t *r) {
+-#ifdef __FFLASFFPACK_HAVE_INT128
++#if defined(__FFLASFFPACK_HAVE_INT128) && defined(__x86_64__)
+     return divide_128(1_ui64 << (d - 1), 0, q, r);
+ #else
+     lldiv_t ta;
+--- a/fflas-ffpack/utils/fflas_memory.h.orig	2016-07-30 12:27:29.000000000 -0600
++++ b/fflas-ffpack/utils/fflas_memory.h	2016-10-20 15:24:31.085622001 -0600
+@@ -101,7 +101,7 @@ namespace FFLAS{
+     inline void prefetch(const int64_t*) {} 
+ #endif
+ 
+-
++#if defined(__i386__) || defined(__x86_64__)
+ #define __CPUID(abcd,func,id) \
+     __asm__ __volatile__ ("cpuid": "=a" (abcd[0]), "=b" (abcd[1]), "=c" (abcd[2]), "=d" (abcd[3]) : "a" (func), "c" (id) );
+ 
+@@ -165,6 +165,9 @@ namespace FFLAS{
+ 	    //cout<<"large TLB: "<<lTLB<<endl;
+ 	    tlb=sTLB*4096;
+     }
++#else
++    inline void getTLBSize(int& tlb){tlb = 0;}
++#endif
+ 
+ //---------- Cache sizes ----------
+ 
