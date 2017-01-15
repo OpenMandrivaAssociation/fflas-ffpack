@@ -21,7 +21,6 @@ BuildRequires:  doxygen
 BuildRequires:  givaro-devel
 BuildRequires:  gmp-devel
 BuildRequires:  gomp-devel
-BuildRequires:  texlive
 
 # Although there are references to linbox-devel files in this package,
 # linbox-devel Requires fflas-ffpack-devel, not the other way around.
