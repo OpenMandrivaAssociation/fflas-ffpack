@@ -47,7 +47,7 @@ API documentation for fflas-ffpack.
 
 %prep
 %setup -q
-3patch1 -p1
+#patch1 -p1
 
 # Fix character encodings
 for f in AUTHORS TODO; do
