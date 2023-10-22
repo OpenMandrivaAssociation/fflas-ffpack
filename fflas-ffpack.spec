@@ -14,7 +14,7 @@ License:        LGPLv2+ and CeCILL-B
 URL:            http://linalg.org/projects/fflas-ffpack
 Source0:	https://github.com/linbox-team/fflas-ffpack/releases/download/v%{version}/fflas-ffpack-%{version}.tar.gz
 
-Patch1:		fflas-ffpack-x86.patch
+#Patch1:		fflas-ffpack-x86.patch
 
 BuildRequires:  libatlas-devel
 BuildRequires:  doxygen
@@ -47,7 +47,7 @@ API documentation for fflas-ffpack.
 
 %prep
 %setup -q
-%patch1 -p1
+3patch1 -p1
 
 # Fix character encodings
 for f in AUTHORS TODO; do
