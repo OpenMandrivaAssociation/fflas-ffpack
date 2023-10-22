@@ -6,7 +6,7 @@
 %define _disable_lto 1
 
 Name:           fflas-ffpack
-Version:        2.2.2
+Version:        2.5.0
 Release:        1
 Summary:        Finite field linear algebra subroutines
 # %%{_bindir}/fflasffpack-config is CeCILL-B; other files are LGPLv2+
