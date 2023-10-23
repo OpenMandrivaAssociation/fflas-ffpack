@@ -15,10 +15,10 @@ URL:            http://linalg.org/projects/fflas-ffpack
 Source0:	https://github.com/linbox-team/fflas-ffpack/releases/download/v%{version}/fflas-ffpack-%{version}.tar.gz
 
 
-BuildRequires:  libatlas-devel
+BuildRequires:  pkgconfig(atlas)
 BuildRequires:  doxygen
-BuildRequires:  givaro-devel
-BuildRequires:  gmp-devel
+BuildRequires:  pkgconfig(givaro)
+BuildRequires:  pkgconfig(gmp)
 BuildRequires:  gomp-devel
 BuildRequires:  locales-extra-charsets
 
@@ -31,7 +31,7 @@ over word size prime finite fields.
 
 %package devel
 Summary:        Header files for developing with fflas-ffpack
-Requires:       libatlas-devel, givaro-devel, gmp-devel
+Requires:       pkgconfig(atlas), pkgconfig(givaro), pkgconfig(gmp)
 
 %description devel
 The FFLAS-FFPACK library provides functionality for dense linear algebra
@@ -73,8 +73,6 @@ sed -e 's,-lcblas,-lsatlas,' \
     -i configure
 
 %build
-#export CC=gcc
-#export CXX=g++
 %configure --docdir=%{_docdir}/fflas-ffpack --disable-static --enable-openmp \
   --disable-simd --enable-doc \
   --with-blas-cflags="-I%{_includedir}/atlas" \
