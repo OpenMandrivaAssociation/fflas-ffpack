@@ -14,7 +14,6 @@ License:        LGPLv2+ and CeCILL-B
 URL:            http://linalg.org/projects/fflas-ffpack
 Source0:	https://github.com/linbox-team/fflas-ffpack/releases/download/v%{version}/fflas-ffpack-%{version}.tar.gz
 
-#Patch1:		fflas-ffpack-x86.patch
 
 BuildRequires:  libatlas-devel
 BuildRequires:  doxygen
@@ -47,8 +46,7 @@ Requires:       %{name}-devel%{?_isa} = %{version}-%{release}
 API documentation for fflas-ffpack.
 
 %prep
-%setup -q
-#patch1 -p1
+%autosetup -p1
 
 # Fix character encodings
 for f in AUTHORS TODO; do
@@ -75,13 +73,13 @@ sed -e 's,-lcblas,-lsatlas,' \
     -i configure
 
 %build
-export CC=gcc
-export CXX=g++
+#export CC=gcc
+#export CXX=g++
 %configure --docdir=%{_docdir}/fflas-ffpack --disable-static --enable-openmp \
   --disable-simd --enable-doc \
   --with-blas-cflags="-I%{_includedir}/atlas" \
   --with-blas-libs="-L%{_libdir}/atlas -lsatlas"
-%make
+%make_build
 
 # Fix the config file for the monolithic ATLAS libraries
 sed -e 's, -lsatlas -lsatlas,-lsatlas,' \
@@ -102,24 +100,9 @@ rm -fr $RPM_BUILD_ROOT%{_prefix}/docs
 # Don't want these files in with the HTML files
 rm -f doc/fflas-ffpack-html/{AUTHORS,COPYING,INSTALL}
 
-%check
-# The Givaro::Integer-related FTRSM tests are broken in 2.2.2.  Disable them
-# for now.  Remove this for the next release, since a fix has already been
-# checked into git.  (The fix touches too much to backport easily.)
-sed -i '/run_with_field</d' tests/test-ftrsm.C
-
-if [ %{__isa_bits} = "32" ]; then
-  # On 32-bit architectures, the LU tests are broken for a similar reason.
-  # Also reenable these tests on the next release after 2.2.2.
-  sed -i '/run_with_field</d' tests/test-lu.C
-fi
-%ifnarch x86_64
-# tests fail on abf (illegal instruction) but pass on local
-make check
-%endif
 
 %files devel
-%doc AUTHORS ChangeLog COPYING NEWS TODO
+%doc AUTHORS ChangeLog COPYING TODO
 %{_bindir}/fflas-ffpack-config
 %{_includedir}/fflas-ffpack
 %{_libdir}/pkgconfig/fflas-ffpack.pc
