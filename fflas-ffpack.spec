@@ -11,7 +11,7 @@ Release:        1
 Summary:        Finite field linear algebra subroutines
 # %%{_bindir}/fflasffpack-config is CeCILL-B; other files are LGPLv2+
 License:        LGPLv2+ and CeCILL-B
-URL:            http://linalg.org/projects/fflas-ffpack
+URL:            https://linalg.org/projects/fflas-ffpack
 Source0:	https://github.com/linbox-team/fflas-ffpack/releases/download/v%{version}/fflas-ffpack-%{version}.tar.gz
 
 
