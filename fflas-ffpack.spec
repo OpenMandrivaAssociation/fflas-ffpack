@@ -15,6 +15,11 @@ URL:            https://linalg.org/projects/fflas-ffpack
 Source0:	https://github.com/linbox-team/fflas-ffpack/releases/download/v%{version}/fflas-ffpack-%{version}.tar.gz
 
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:  pkgconfig(atlas)
 BuildRequires:  doxygen
 BuildRequires:  pkgconfig(givaro)
